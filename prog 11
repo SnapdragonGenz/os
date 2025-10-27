@@ -1,0 +1,24 @@
+echo "Merge Multiple text files"
+read -p "enter the name of the output file: " output
+
+>"$output"
+ 
+while true
+do 
+
+read -p "enter a file name to merge(or enter 'done' to finish): " file
+
+if [ "$file" = "done" ]; then
+break
+fi 
+if [ -f "$file" ]; then
+cat "$file" >> "$output"
+echo "merged $file"
+else
+echo "file '$file' does not exist"
+fi
+done
+
+echo "all file have been merged into $output"	
+echo "merged file content"
+cat "$output"
