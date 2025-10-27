@@ -1,0 +1,74 @@
+vi sender.c
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <string.h>
+#include <stdio.h>
+
+struct mymsg {
+    long int msg_type;
+    char msg[100];
+};
+
+int main() {
+    int msgid, running = 1;
+    struct mymsg data;
+    char buf[100];
+
+    msgid = msgget((key_t)1234, 0666 | IPC_CREAT);
+    if (msgid == -1) {
+        perror("msgget failed");
+        return 1;
+    }
+
+    while (running) {
+        printf("Enter the message:\n");
+        fgets(buf, 100, stdin);
+
+        data.msg_type = 1;
+        strcpy(data.msg, buf);
+
+        if (msgsnd(msgid, &data, sizeof(data.msg), 0) == -1) {
+            perror("Message not sent");
+        }
+
+        if (strncmp(buf, "end", 3) == 0) {
+            running = 0;
+        }
+    }
+
+    return 0;
+}
+
+vi receiver.c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <string.h>
+
+struct mymsg {
+    long int msg_type;
+    char msg[100];
+};
+
+int main() {
+    int msgid, running = 1;
+    struct mymsg data;
+    long int msg_to_rec = 0;
+
+    msgid = msgget((key_t)1234, 0666 | IPC_CREAT);
+
+    while (running) {
+        msgrcv(msgid, &data, sizeof(data.msg), msg_to_rec, 0);
+        printf("%s\n", data.msg);
+
+        if (strncmp(data.msg, "end", 3) == 0) {
+            running = 0;
+        }
+    }
+
+    return 0;
+}
