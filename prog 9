@@ -1,0 +1,25 @@
+echo "enter a string"
+read str1
+echo "enter another string"
+read str2
+
+concat="$str1$str2"
+echo "concatenated string is : $concat "
+
+echo "length of the first string: ${#str1} "
+echo "length of the second string: ${#str2} "
+
+if [ "$str1" = "$str2" ]; then
+echo "strings are equal"
+else 
+echo "strings are not equal"
+fi
+
+echo "first three characters of first string is: ${str1:0:3}"
+
+if [ -z "$str1" ]; then
+echo "first string is empty"
+else
+echo "first string is not empty"
+fi
+
