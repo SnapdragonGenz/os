@@ -1,0 +1,26 @@
+echo ""
+echo "---Employee Salary Calculation---"
+read -p "Enter number of employees: " n
+i=1
+while [ $i -le $n ]
+do
+  echo ""
+  echo "Enter details for employee $i"
+  read -p "Enter employee name: " name
+  read -p "Enter basic salary: " basic
+
+  hra=$((basic * 20 / 100))
+  da=$((basic * 10 / 100))
+  total=$((basic + hra + da))
+
+  echo ""
+  echo "---Salary Details---"
+  echo "Name          : $name"
+  echo "Basic Salary  : $basic"
+  echo "HRA (20%)     : $hra"
+  echo "DA (10%)      : $da"
+  echo "Total Salary  : $total"
+  echo ""
+
+  i=$((i + 1))
+done
