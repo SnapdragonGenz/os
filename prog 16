@@ -1,0 +1,34 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <signal.h>
+
+int main()
+{
+    int i = 1;
+    pid_t pid;
+
+    pid = fork();
+    printf("Process id %d\n", getpid());
+
+    if (pid == 0)  // Child process
+    {
+        while (i <= 3)
+        {
+            printf("I'm child, my pid is %d\n", getpid());
+            i = i + 1;
+            sleep(5);
+        }
+    }
+    else  // Parent process
+    {
+        kill(pid, SIGTSTP);
+        printf("Suspended child process\n");
+        sleep(5);
+
+        kill(pid, SIGCONT);
+        printf("Resuming child process\n");
+        sleep(5);
+    }
+
+    return 0;
+}
