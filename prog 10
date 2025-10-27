@@ -1,0 +1,69 @@
+while true
+do
+  echo ""
+  echo "---File permission---"
+  echo "1. Show current permission"
+  echo "2. Add read permission"
+  echo "3. Remove read permission"
+  echo "4. Add write permission"
+  echo "5. Remove write permission"
+  echo "6. Add execute permission"
+  echo "7. Remove execute permission"
+  echo "8. Exit"
+  echo -n "Enter your choice: "
+  read choice
+
+  if [ "$choice" -eq 8 ]; then
+    echo "Exiting..."
+    break
+  fi
+
+  echo -n "Enter filename: "
+  read filename
+
+  if [ ! -e "$filename" ]; then
+    echo "$filename does not exist"
+    echo ""
+    continue
+  fi
+
+  case $choice in
+    1)
+      echo "Current permission for $filename:"
+      ls -l "$filename"
+      ;;
+    2)
+      chmod u+r "$filename"
+      echo "Added read permission"
+      ls -l "$filename"
+      ;;
+    3)
+      chmod u-r "$filename"
+      echo "Removed read permission"
+      ls -l "$filename"
+      ;;
+    4)
+      chmod u+w "$filename"
+      echo "Added write permission"
+      ls -l "$filename"
+      ;;
+    5)
+      chmod u-w "$filename"
+      echo "Removed write permission"
+      ls -l "$filename"
+      ;;
+    6)
+      chmod u+x "$filename"
+      echo "Added execute permission"
+      ls -l "$filename"
+      ;;
+    7)
+      chmod u-x "$filename"
+      echo "Removed execute permission"
+      ls -l "$filename"
+      ;;
+    *)
+      echo "Invalid choice!"
+      ;;
+  esac
+done
